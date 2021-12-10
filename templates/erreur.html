@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% autoescape false %}
+<header class="d-none row">
+	<div class="col col-6 title"><h1>Donn&eacute;es citoyennes</h1></div>
+	<div class="col col-6 logo"><img src="" title="" class="d-none" /></div>
+</header>
+<div class="alert alert-danger text-left m-5" role="alert">
+	<h2>{{ errorCode }}</h2>
+	{{ errorMessage }}
+	<br /><br />
+    <a class="font-weight-bolder" href="/">Retour &agrave; l'accueil</a>
+</div>
+{% endautoescape %}
+{% endblock %}

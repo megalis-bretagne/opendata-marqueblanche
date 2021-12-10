@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% autoescape false %}
+<header class="d-none row">
+    <div class="col col-6 title"><h1><span></span>Donn&eacute;es citoyennes</h1></div>
+    <div class="col col-6 logo"><img src="" title="" class="d-none" /></div>
+</header>
+<main class="col col-12 bd-content mx-auto mt-3" role="main">
+    <div id="collapse-area" class="container">
+        <div id="search-area" class="collapse show" data-parent="#collapse-area">
+            <form id="search-form">
+                <input type="hidden" id="csrf_name" name="{{ csrf.keys.name }}" value="{{ csrf.name }}" />
+                <input type="hidden" id="csrf_value" name="{{ csrf.keys.value }}" value="{{ csrf.value }}" />
+                <input type="hidden" name="current" value="1" />
+                <input type="hidden" name="offset" value="0" />
+                <div class="form-group">
+                    <input type="text" name="search-field" class="form-control form-control-sm" />
+                </div>
+                <a href="#" class="btn btn-sm btn-primary" role="button" aria-pressed="true">Rechercher</a>
+                <a class="btn btn-sm btn-secondary float-right collapsed" data-toggle="collapse" data-target="#advanced-search-area" aria-expanded="false" aria-controls="advanced-search-area" title="Recherche avanc&eacute;e">Recherche avanc&eacute;e</a>
+            </form>
+        </div>
+        <div id="advanced-search-area" class="collapse" data-parent="#collapse-area">
+            <form id="advanced-search-form">
+                <input type="hidden" name="{{ csrf.keys.name }}" value="{{ csrf.name }}" />
+                <input type="hidden" name="{{ csrf.keys.value }}" value="{{ csrf.value }}" />
+                <input type="hidden" name="current" value="1" />
+                <input type="hidden" name="offset" value="0" />
+                <div class="form-group">
+                    <label for="content">Contenu</label>
+                    <input type="text" name="content" class="form-control form-control-sm" placeholder="Mots cl&eacute; du contenu" />
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                            <label for="type">Type de document</label>
+                            <select class="form-control form-control-sm" name="type">
+                                <option value="">Tous</option>
+                                <option value=1">D&eacute;lib&eacute;rations</option>
+                                <option value="2">Documents budg&eacute;taires et financiers</option>
+                            </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="startdate">Date de d&eacute;but</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button title="Effacer" class="btn btn-sm btn-outline-secondary erase-date" type="button"><i class="fas fa-eraser"></i></button>
+                            </div>
+                            <input type="date" name="startdate" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="enddate">Date de fin</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button title="Effacer" class="btn btn-sm btn-outline-secondary erase-date" type="button"><i class="fas fa-eraser"></i></button>
+                            </div>
+                            <input type="date" name="enddate" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row" id="address-area">
+                    <div class="form-group col-md-2">
+                        <label for="zipcode">Code postal</label>
+                        <input type="text" name="zipcode" class="form-control form-control-sm" />
+                    </div>
+                    <div class="form-group col-md-10">
+                        <label for="city">Ville</label>
+                        <input type="text" name="city" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <a href="#" class="btn btn-sm btn-primary" role="button" aria-pressed="true">Rechercher</a>
+                <a class="btn btn-sm btn-secondary float-right collapsed" data-toggle="collapse" data-target="#search-area" aria-expanded="true" aria-controls="search-area" title="Recherche simple">Recherche simple</a>
+            </form>
+        </div>
+    </div>
+    <div id="message-area" class="container mt-3">
+        <div class="alert alert-dismissible fade d-none" role="alert">
+            <button type="button" class="close" aria-label="Fermer">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span class="message"></span>
+        </div>
+    </div>
+    <div id="results-area" class="container d-none">
+        <div class="btn btn-sm btn-success" id="nb-results">
+            Nombre de r&eacute;sultat(s) <span class="badge badge-light ml-3"></span>
+        </div>
+        <a class="btn btn-sm btn-secondary float-right explore" title="Explorer les donn&eacute;es citoyennes">Explorer les donn&eacute;es citoyennes</a>
+        <a class="btn btn-sm btn-secondary float-right new" title="Nouvelle recherche">Nouvelle recherche</a>
+        <ul class="list-group list-group-flush mt-2"></ul>
+        <nav aria-label="Navigation r&eacute;sultats de la recherche">
+            <ul class="pagination pagination-sm justify-content-center mt-2"></ul>
+        </nav>
+    </div>
+    <div id="directory-area" class="container">
+        <div id="loading-area" class="container text-center d-none">
+            <div class="spinner-border m-5" role="status">
+                <span class="sr-only">Chargement, veuillez patienter...</span>
+            </div>
+        </div>
+        <div id="directory"></div>
+    </div>
+</main>
+{% endautoescape %}
+{% endblock %}
+
+{% block script %}
+{% autoescape false %}
+        <script type="text/javascript" src="resources/javascript/pdf.js/build/pdf.js" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="resources/javascript/research.min.js"></script>
+        <script type="text/javascript" src="resources/javascript/explorer.min.js"></script>
+{% endautoescape %}
+{% endblock %}

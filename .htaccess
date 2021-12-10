@@ -1,0 +1,32 @@
+SetEnv REGISTER_GLOBALS 0
+SetEnv MAGIC_QUOTES 0
+SetEnv SESSION_USE_TRANS_SID 0
+
+Options -Indexes
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+<IfModule mod_headers.c>
+	Header set Connection keep-alive
+	<FilesMatch ".(pdf|js|css)$">
+		Header set Access-Control-Allow-Origin "*"
+	</FilesMatch>
+
+	<FilesMatch "\.(ico|jpe?g|png|gif|swf|css|gz)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "max-age=7200, public"
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+	SetOutputFilter DEFLATE
+	SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+	SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
+</IfModule>
+
+

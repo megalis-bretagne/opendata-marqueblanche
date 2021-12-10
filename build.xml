@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="DataSearchEngine" default="build">
+    <property name="basedir" value="." override="true" />
+    <property name="source" value="${basedir}/src" />
+
+    <!-- PREPARE -->
+    <target name="prepare" description="Prepare project and create properties file">
+        <echo msg="Copy javascript properties file..." />
+        <delete file="${basedir}/resources/javascript/properties.js" />
+        <copy file="${basedir}/resources/javascript/conf/properties${env.siren}.js" tofile="${basedir}/resources/javascript/properties.js" />
+
+        <echo msg="Copy main properties file..." />
+        <delete file="${basedir}/src/inc.config.php" />
+        <copy file="${basedir}/src/conf/inc.config${env.level}.php" tofile="${basedir}/src/inc.config.php" />
+
+        <echo msg="Delete configuration and working folder, and README file..." />
+        <delete dir="${basedir}/resources/javascript/conf" />
+        <delete dir="${basedir}/resources/javascript/work" />
+        <delete dir="${basedir}/src/conf" />
+        <delete file="${basedir}/README.md" />
+
+        <!--
+        <echo msg="Create OpenData directory with folders tree..." />
+        <mkdir dir="${basedir}/OpenData" />
+        <mkdir dir="${basedir}/OpenData/0_Actes_administratifs" />
+        <mkdir dir="${basedir}/OpenData/1_Commande_publique" />
+        <mkdir dir="${basedir}/OpenData/2_Urbanisme" />
+        <mkdir dir="${basedir}/OpenData/3_Domaine_et_patrimoine" />
+        <mkdir dir="${basedir}/OpenData/4_Finances_locales" />
+        <mkdir dir="${basedir}/OpenData/5_Autres_domaines_de_competences" />
+        -->
+
+    </target>
+    <!-- END -->
+
+    <!-- COMPOSER -->
+    <target name="composer" description="Get PHP dependencies">
+        <echo message="Running composer self-update..." />
+        <exec executable="/usr/local/bin/composer" checkreturn="true" passthru="true">
+            <arg value="self-update" />
+        </exec>
+        <echo message="Running composer install..." />
+        <exec executable="/usr/local/bin/composer" checkreturn="true" passthru="true">
+            <arg value="install" />
+            <arg value="--no-interaction" />
+        </exec>
+        <exec executable="/usr/local/bin/composer" checkreturn="true" passthru="true">
+            <arg value="dump-autoload" />
+            <arg value="--optimize" />
+        </exec>
+    </target>
+    <!-- END -->
+
+    <!-- CLEAN -->
+    <target name="clean" description="Clean up build file">
+        <echo msg="Delete build.xml file..." />
+        <delete file="${basedir}/build.xml" />
+    </target>
+    <!-- END -->
+
+    <!-- BUILD -->
+    <target name="build" depends="prepare,composer,clean">
+        <echo msg="Fin du build, début transfert des fichiers..." />
+    </target>
+    <!-- END -->
+
+</project>
