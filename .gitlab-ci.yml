@@ -16,8 +16,8 @@ stages:
 
 docker image:
   extends: .build
-  variables:
-    IMAGE_NAME: "megalis/marqueblanche"
+#  variables:
+#    IMAGE_NAME: "megalis/marqueblanche"
 
 deploy dev:
   extends: .deployInteg
