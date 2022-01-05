@@ -72,7 +72,7 @@ $(document).ready(function() {
     $('#results-area .btn-secondary.new').click(function(event) {
         event.stopPropagation();
         event.preventDefault();
-        exploreDirectory(directory);
+        exploreDirectory(directory,siren);
 
         // Set first page research
         $('#collapse-area input[name="current"]').val(1);
@@ -83,7 +83,7 @@ $(document).ready(function() {
     // Hide alert message on collapse action
     $('.btn.collapsed').on('click', function() {
         $('#message-area .alert').hide();
-        exploreDirectory(directory);
+        exploreDirectory(directory,siren);
     });
 });
 
@@ -96,7 +96,8 @@ function simpleSearch(current, offset) {
     $('ul.pagination').empty().hide();
     $('#search-form input[name="current"]').val(current);
     $('#search-form input[name="offset"]').val(offset);
-    var searchFieldValue = $('#search-form input[name="search-field"]').val();
+    var searchFieldValue = $('#search' +
+        '-form input[name="search-field"]').val();
     if (!searchFieldValue) {
         displayMessage('warning', 'Veuillez saisir un ou des mots cl&eacute;s pour effectuer votre recherche');
     } else {
