@@ -1,5 +1,8 @@
 # Interface de recherche des données citoyennes avec administration
 
+Projet de réutilisation de données délibération issu du projet 'Open Data API de Gironde Numérique disponible ici : https://gitlab.adullact.net/gironde-numerique/api-open-data
+
+
 ## Description
 Cette application constitue un moteur de recherche de données publiques pour une collectivité. Elle s'accompagne d'une interface d'administration des documents constituant le jeu des données publiques associées.
 Elle s'installe pour chaque collectivité permettant de cloisonner les fichiers des documents de celle-ci. Il est aussi possible d'installer une seule instance de cette interface pour plusieurs collectivités, auquel cas le numéro SIREN ne doit pas être renseigné dans le fichier de propriétés.
@@ -26,3 +29,4 @@ Elle s'installe pour chaque collectivité permettant de cloisonner les fichiers 
 ## Administration
 - Les documents sont administrables (suppression uniquement) par le biais de l'interface d'administration accessible au lien http://data.[nom_de_domaine]/administration
 - Ajout de documents (pouvant être composés de plusieurs fichiers) à partir de l'administration
+- 
