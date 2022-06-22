@@ -323,7 +323,7 @@ function feedResultLine(doc) {
     if (doc.filepath) {
         var filename = doc.stream_name[0];
         var filepath = doc.filepath[0];
-        var filetype = doc.stream_content_type[0];
+        var filetype = doc.content_type[0];
         if (location.protocol === 'https:') {
             filepath = filepath.replace('http:', 'https:');
         }

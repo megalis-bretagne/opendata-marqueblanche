@@ -153,6 +153,11 @@ nav .fas {
     margin-left: -40px;
 }
 
+#results-area li.pj {
+    margin-left: 40px;
+    background-color: #e2e8e8;
+}
+
 a.mime {
     background-repeat: no-repeat;
     background-size: 30px;

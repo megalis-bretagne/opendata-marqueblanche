@@ -32,22 +32,8 @@ class AdvancedSearchAction {
                $keywords  = ArrayUtils::get($params, 'content');
                $siren     = ArrayUtils::get($params, 'siren');
                $type      = ArrayUtils::get($params, 'type');
-               if (!empty($type)) {
-                    switch ($type) {
-                        case 1 :
-                              $type = 1;
-                              break;
-                         case 2 :
-                              $type= 5;
-                              break;
-                         default :
-                             $type= null;
-                    }
-               }
                $startdate = ArrayUtils::get($params, 'startdate');
                $enddate   = ArrayUtils::get($params, 'enddate');
-               $zipcode   = ArrayUtils::get($params, 'zipcode');
-               $city      = ArrayUtils::get($params, 'city');
                $offset    = ArrayUtils::get($params, 'offset');
                $limit     = ArrayUtils::get($params, 'limit');
 
