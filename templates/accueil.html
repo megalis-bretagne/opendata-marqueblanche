@@ -15,7 +15,21 @@
                 <input type="hidden" name="current" value="1" />
                 <input type="hidden" name="offset" value="0" />
                 <div class="form-group">
-                    <input type="text" name="search-field" class="form-control form-control-sm" />
+                    <input type="text" name="search-field" class="form-control form-control-sm" placeholder="Mots cl&eacute; du contenu" />
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        <select class="form-control form-control-sm" name="type">
+                            <option value="" disabled selected>Type de document</option>
+                            <option value="">Tous</option>
+                            <option value="1">D&eacute;lib&eacute;rations</option>
+                            <option value="2">Actes r&eacuteglementaires</option>
+                            <option value="3">Actes individuels</option>
+                            <option value="4">Contrats,conventions et avenants</option>
+                            <option value="5">Documents budg&eacute;taires et financiers</option>
+                            <option value="6">Autres</option>
+                        </select>
+                    </div>
                 </div>
                 <a href="#" class="btn btn-sm btn-primary" role="button" aria-pressed="true">Rechercher</a>
                 <a class="btn btn-sm btn-secondary float-right collapsed" data-toggle="collapse" data-target="#advanced-search-area" aria-expanded="false" aria-controls="advanced-search-area" title="Recherche avanc&eacute;e">Recherche avanc&eacute;e</a>
@@ -28,16 +42,19 @@
                 <input type="hidden" name="current" value="1" />
                 <input type="hidden" name="offset" value="0" />
                 <div class="form-group">
-                    <label for="content">Contenu</label>
                     <input type="text" name="content" class="form-control form-control-sm" placeholder="Mots cl&eacute; du contenu" />
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-5">
-                            <label for="type">Type de document</label>
                             <select class="form-control form-control-sm" name="type">
+                                <option value="" disabled selected>Type de document</option>
                                 <option value="">Tous</option>
-                                <option value=1">D&eacute;lib&eacute;rations</option>
-                                <option value="2">Documents budg&eacute;taires et financiers</option>
+                                <option value="1">D&eacute;lib&eacute;rations</option>
+                                <option value="2">Actes r&eacuteglementaires</option>
+                                <option value="3">Actes individuels</option>
+                                <option value="4">Contrats,conventions et avenants</option>
+                                <option value="5">Documents budg&eacute;taires et financiers</option>
+                                <option value="6">Autres</option>
                             </select>
                     </div>
                 </div>
@@ -61,16 +78,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-row" id="address-area">
-                    <div class="form-group col-md-2">
-                        <label for="zipcode">Code postal</label>
-                        <input type="text" name="zipcode" class="form-control form-control-sm" />
-                    </div>
-                    <div class="form-group col-md-10">
-                        <label for="city">Ville</label>
-                        <input type="text" name="city" class="form-control form-control-sm" />
-                    </div>
-                </div>
                 <a href="#" class="btn btn-sm btn-primary" role="button" aria-pressed="true">Rechercher</a>
                 <a class="btn btn-sm btn-secondary float-right collapsed" data-toggle="collapse" data-target="#search-area" aria-expanded="true" aria-controls="search-area" title="Recherche simple">Recherche simple</a>
             </form>
@@ -85,23 +92,14 @@
         </div>
     </div>
     <div id="results-area" class="container d-none">
+        <hr>
         <div class="btn btn-sm btn-success" id="nb-results">
             Nombre de r&eacute;sultat(s) <span class="badge badge-light ml-3"></span>
         </div>
-        <a class="btn btn-sm btn-secondary float-right explore" title="Explorer les donn&eacute;es citoyennes">Explorer les donn&eacute;es citoyennes</a>
-        <a class="btn btn-sm btn-secondary float-right new" title="Nouvelle recherche">Nouvelle recherche</a>
         <ul class="list-group list-group-flush mt-2"></ul>
         <nav aria-label="Navigation r&eacute;sultats de la recherche">
             <ul class="pagination pagination-sm justify-content-center mt-2"></ul>
         </nav>
-    </div>
-    <div id="directory-area" class="container">
-        <div id="loading-area" class="container text-center d-none">
-            <div class="spinner-border m-5" role="status">
-                <span class="sr-only">Chargement, veuillez patienter...</span>
-            </div>
-        </div>
-        <div id="directory"></div>
     </div>
 </main>
 {% endautoescape %}

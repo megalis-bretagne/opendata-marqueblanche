@@ -42,7 +42,6 @@ $(document).ready(function() {
  * @param {string} siren siren
  */
 function exploreDirectory(path,siren) {
-    $('#collapse-area').show();
     $('#directory-area').show();
     $('#loading-area').show();
     $('#message-area .alert').hide()

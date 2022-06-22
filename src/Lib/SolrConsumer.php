@@ -123,7 +123,7 @@ class SolrConsumer {
             $query->addField('siren');                  // Entity siren
             $query->addField('date');                   // Document date
             $query->addField('filepath');               // File OpenData URL
-            $query->addField('stream_content_type');    // Type of document file
+            $query->addField('content_type');    // Type of document file
             $query->addField('id');                     // Solr document identifier
             $query->addField('stream_name');            // Filename
     
@@ -143,6 +143,7 @@ class SolrConsumer {
 	 *
 	 * @param string $keywords Search keywords
      * @param string $siren Entity SIREN to filter results for entity only
+     * @param string $type type of document
 	 * @param int $offset Start offset for search
 	 * @param int $limit Limit for results display
 	 * @param boolean $qf (optional) Flag to activate queryField search for numerized documents (false by default)
@@ -151,9 +152,13 @@ class SolrConsumer {
 	 * @throws \Exception If an error occured during request
 	 * @access public
 	 */
-    public function simpleSearch($keywords, $siren, $offset, $limit, $qf = false) {
+    public function simpleSearch($keywords, $siren, $type, $offset, $limit, $qf = false) {
         try {
             $query = $this->initializeQuery($siren, $offset, $limit, $keywords, $qf);
+
+            if (!empty($type)) {
+                $query->addFilterQuery('documenttype:'.SolrUtils::queryPhrase($type));
+            }
     
             return $this->getSolrClient()->query($query)->getResponse();
 
@@ -419,7 +424,9 @@ class SolrConsumer {
         $query->addField('filepath');               // File OpenData URL
         $query->addField('documenttype');           // Document type
         $query->addField('classification');         // Classification
-        $query->addField('stream_content_type');    // Type of document file
+        $query->addField('typology');               // Typology
+        $query->addField('date_de_publication');    // Date de publication
+        $query->addField('content_type');           // Type of document file
         $query->addField('id');                     // Solr document identifier
         $query->addField('documentidentifier');     // Pastell document identifier
         $query->addField('description');            // Document short description
