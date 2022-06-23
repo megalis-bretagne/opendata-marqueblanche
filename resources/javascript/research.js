@@ -203,7 +203,14 @@ function feedResultLine(doc, collapse) {
         line = line.concat(' show');
     }
     line = line.concat('" id="details-').concat(doc.id).concat('">');
-    var filetype = doc.content_type[0];
+
+    var filetype= "";
+    if(doc.content_type) {
+        filetype = doc.content_type[0];
+    } else if (doc.stream_content_type){
+        filetype = doc.stream_content_type[0];
+    }
+
     if (doc.filepath) {
         const tab= doc.filepath[0].split('/')
         var filename = unescape(tab[tab.length-1])

@@ -122,7 +122,8 @@ class SolrConsumer {
             $query->addField('siren');                  // Entity siren
             $query->addField('date');                   // Document date
             $query->addField('filepath');               // File OpenData URL
-            $query->addField('content_type');    // Type of document file
+            $query->addField('content_type');           // Type of document file
+            $query->addField('stream_content_type');    // Type of document file
             $query->addField('id');                     // Solr document identifier
             $query->addField('stream_name');            // Filename
     
@@ -412,6 +413,7 @@ class SolrConsumer {
         $query->addField('typology');               // Typology
         $query->addField('date_de_publication');    // Date de publication
         $query->addField('content_type');           // Type of document file
+        $query->addField('stream_content_type');    // Type of document file
         $query->addField('id');                     // Solr document identifier
         $query->addField('documentidentifier');     // Pastell document identifier
         $query->addField('description');            // Document short description
