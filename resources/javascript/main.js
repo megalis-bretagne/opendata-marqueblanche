@@ -20,8 +20,8 @@ if (urlParams.has('siren')) {
         siren: '222800013',
         title: 'Eure-et-Loir département',
         directory: 'OpenData',
-        backgroundcolorstart: '#fcfce4',
-        backgroundcolorend: '#e3e6e7',
+        backgroundcolorstart: '#000000',
+        backgroundcolorend: '#ffffff',
         gradient: true,
         color: '#e6eaea',
         image: '222800013.png'
