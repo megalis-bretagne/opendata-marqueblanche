@@ -124,12 +124,7 @@ function advancedSearch(current, offset) {
     $('ul.pagination').empty().hide();
     $('#advanced-search-form input[name="current"]').val(current);
     $('#advanced-search-form input[name="offset"]').val(offset);
-    var inputFieldValue = 0;
-    $('#advanced-search-form input[type="text"], #advanced-search-form input[type="date"], #advanced-search-form select').each(function() {
-        if ($(this).val().trim() !== '') {
-            inputFieldValue++;
-        }
-    });
+
 
     showhide('#loading-area', '#directory-area');
     $.ajax({
