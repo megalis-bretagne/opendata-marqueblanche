@@ -7,14 +7,11 @@ $(document).ready(function() {
         if (event.which === 13) {
             event.stopPropagation();
             event.preventDefault();
+
             if ($('#search-form').is(':visible')) {
-                var current = parseInt($.trim($('#search-form input[name="current"]').val()));
-                var offset = parseInt($.trim($('#search-form input[name="offset"]').val()));
-                simpleSearch(current, offset);
+                simpleSearch(1, 0);
             } else if ($('#advanced-search-form').is(':visible')) {
-                var current = parseInt($.trim($('#advanced-search-form input[name="current"]').val()));
-                var offset = parseInt($.trim($('#advanced-search-form input[name="offset"]').val()));
-                advancedSearch(current, offset);
+                advancedSearch(1, 0);
             }
         }
     });
@@ -54,18 +51,14 @@ $(document).ready(function() {
 	$('#search-form .btn-primary').click(function(event) {
         event.stopPropagation();
         event.preventDefault();
-        var current = parseInt($.trim($('#search-form input[name="current"]').val()));
-        var offset = parseInt($.trim($('#search-form input[name="offset"]').val()));
-        simpleSearch(current, offset);
+        simpleSearch(1, 0);
     });
     
     // Validate advanced search form.
 	$('#advanced-search-form .btn-primary').click(function(event) {
         event.stopPropagation();
         event.preventDefault();
-        var current = parseInt($.trim($('#advanced-search-form input[name="current"]').val()));
-        var offset = parseInt($.trim($('#advanced-search-form input[name="offset"]').val()));
-        advancedSearch(current, offset);
+        advancedSearch(1, 0);
     });
 
     // New search.
@@ -239,15 +232,15 @@ function feedResultLine(doc, collapse) {
 
     line = line.concat('<li>');
     if (doc.documenttype) {
-        if (doc.documenttype === 1 ) {
+        if (doc.documenttype[0] === 1 ) {
             line = line.concat('Type de document : <span class="font-italic">').concat("D&eacute;lib&eacute;rations").concat('</span>');
-        } else if (doc.documenttype === 2 ) {
+        } else if (doc.documenttype[0] === 2 ) {
             line = line.concat('Type de document : <span class="font-italic">').concat("Actes r&eacuteglementaires").concat('</span>');
-        } else if (doc.documenttype === 3 ) {
+        } else if (doc.documenttype[0] === 3 ) {
             line = line.concat('Type de document : <span class="font-italic">').concat("Actes individuels").concat('</span>');
-        } else if (doc.documenttype === 4 ) {
+        } else if (doc.documenttype[0] === 4 ) {
             line = line.concat('Type de document : <span class="font-italic">').concat("Contrats,conventions et avenants").concat('</span>');
-        } else if (doc.documenttype === 5 ) {
+        } else if (doc.documenttype[0] === 5 ) {
             line = line.concat('Type de document : <span class="font-italic">').concat("Documents budg&eacute;taires et financiers").concat('</span>');
         } else {
             line = line.concat('Type de document : <span class="font-italic">').concat("autre").concat('</span>');
@@ -263,6 +256,9 @@ function feedResultLine(doc, collapse) {
     }
     if (doc.date_de_publication) {
         line = line.concat('<li>Date de publication : <span class="date">').concat(toDate(doc.date_de_publication[0])).concat('</span></li>');
+    }
+    if (doc.siren) {
+        line = line.concat('<li>SIREN : <span class="font-italic">').concat(decodeUtf8(doc.siren)).concat('</span></li>');
     }
     line = line.concat('</ul>');
 
