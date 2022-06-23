@@ -40,11 +40,11 @@ class AdvancedSearchAction {
                $solr = $this->container->get('solr');
 
                // Plain text search.
-               $search = $solr->advancedSearch($keywords, $type, $siren, $startdate, $enddate, $zipcode, $city, $offset, $limit);
+               $search = $solr->advancedSearch($keywords, $type, $siren, $startdate, $enddate, $offset, $limit);
                $total = $search['response']['numFound'];
                if ($total == 0) {
                     // Seconde chance with query filter search.
-                    $search = $solr->advancedSearch($keywords, $type, $siren, $startdate, $enddate, $zipcode, $city, $offset, $limit, true);
+                    $search = $solr->advancedSearch($keywords, $type, $siren, $startdate, $enddate, $offset, $limit, true);
                     $total = $search['response']['numFound'];
                }
 

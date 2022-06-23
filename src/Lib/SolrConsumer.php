@@ -68,7 +68,6 @@ class SolrConsumer {
         curl_setopt_array($ch, $options);
 		curl_exec($ch);
 		$result = false;
-		$errmsg;
         if (curl_errno($ch) == 0) {
 			$status = curl_getinfo($ch)['http_code'];
             if ($status == 200) {
@@ -179,8 +178,6 @@ class SolrConsumer {
      * @param string $siren Entity SIREN to filter results for entity only
 	 * @param string $startDate Start date from search form
 	 * @param string $endDate End date from search form
-	 * @param string $zipCode Zipcode from search form
-	 * @param string $city City from search form
 	 * @param int $offset Start offset for search
 	 * @param int $limit Limit for results display
 	 * @param boolean $qf (optional) Flag to activate queryField search for numerized documents (false by default)
@@ -189,7 +186,7 @@ class SolrConsumer {
 	 * @throws \Exception If an error occured during request
 	 * @access public
 	 */
-    public function advancedSearch($keywords, $type, $siren, $startDate, $endDate, $zipCode, $city, $offset, $limit, $qf = false) {
+    public function advancedSearch($keywords, $type, $siren, $startDate, $endDate, $offset, $limit, $qf = false) {
         try {
             if (!empty($keywords)) {
                 $searchWords = $keywords;
@@ -200,12 +197,6 @@ class SolrConsumer {
             }
             if (!empty($startDate) || !empty($endDate)) {
                 $query->addFilterQuery('date:'.$this->setDateFilter($startDate, $endDate));
-            }
-            if (!empty($zipCode)) {
-                $query->addFilterQuery('codepostal:'.$zipCode);
-            }
-            if (!empty($city)) {
-                $query->addFilterQuery('ville:'.$city);
             }
     
             return $this->getSolrClient()->query($query)->getResponse();
@@ -412,12 +403,6 @@ class SolrConsumer {
 	 */
     protected function setFieldsForResponse(SolrDisMaxQuery &$query) {
         $query->addField('entity');                 // Entity name
-        $query->addField('adresse1');               // First line address
-        $query->addField('adresse2');               // Address complement
-        $query->addField('codepostal');             // Zipcode
-        $query->addField('ville');                  // City
-        $query->addField('boitepostale');           // Boite postale
-        $query->addField('cedex');                  // Cedex
         $query->addField('siren');                  // Entity siren
         $query->addField('nic');                    // Entity nic : SIRET = siren+nic
         $query->addField('date');                   // Document date
