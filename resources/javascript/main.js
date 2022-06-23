@@ -18,7 +18,7 @@ if (urlParams.has('siren')) {
     configuration = {
         limit: 10,
         siren: '222800013',
-        title: 'Eure-et-Loir département',
+        //title: 'Eure-et-Loir département',
         directory: 'OpenData',
         backgroundcolorstart: '#000000',
         backgroundcolorend: '#ffffff',
