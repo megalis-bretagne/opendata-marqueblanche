@@ -7,14 +7,11 @@ $(document).ready(function() {
         if (event.which === 13) {
             event.stopPropagation();
             event.preventDefault();
+
             if ($('#search-form').is(':visible')) {
-                var current = parseInt($.trim($('#search-form input[name="current"]').val()));
-                var offset = parseInt($.trim($('#search-form input[name="offset"]').val()));
-                simpleSearch(current, offset);
+                simpleSearch(1, 0);
             } else if ($('#advanced-search-form').is(':visible')) {
-                var current = parseInt($.trim($('#advanced-search-form input[name="current"]').val()));
-                var offset = parseInt($.trim($('#advanced-search-form input[name="offset"]').val()));
-                advancedSearch(current, offset);
+                advancedSearch(1, 0);
             }
         }
     });
@@ -54,18 +51,14 @@ $(document).ready(function() {
 	$('#search-form .btn-primary').click(function(event) {
         event.stopPropagation();
         event.preventDefault();
-        var current = parseInt($.trim($('#search-form input[name="current"]').val()));
-        var offset = parseInt($.trim($('#search-form input[name="offset"]').val()));
-        simpleSearch(current, offset);
+        simpleSearch(1, 0);
     });
     
     // Validate advanced search form.
 	$('#advanced-search-form .btn-primary').click(function(event) {
         event.stopPropagation();
         event.preventDefault();
-        var current = parseInt($.trim($('#advanced-search-form input[name="current"]').val()));
-        var offset = parseInt($.trim($('#advanced-search-form input[name="offset"]').val()));
-        advancedSearch(current, offset);
+        advancedSearch(1, 0);
     });
 
     // New search.
@@ -85,6 +78,7 @@ $(document).ready(function() {
         $('#message-area .alert').hide();
         exploreDirectory(directory,siren);
     });
+    simpleSearch(1,0);
 });
 
 /** @description Execute a simple search with ajax call.
@@ -96,23 +90,22 @@ function simpleSearch(current, offset) {
     $('ul.pagination').empty().hide();
     $('#search-form input[name="current"]').val(current);
     $('#search-form input[name="offset"]').val(offset);
-    var searchFieldValue = $('#search' +
-        '-form input[name="search-field"]').val();
-    if (!searchFieldValue) {
-        displayMessage('warning', 'Veuillez saisir un ou des mots cl&eacute;s pour effectuer votre recherche');
-    } else {
-        showhide('#loading-area', '#directory-area');
-        $.ajax({
-            type : 'post',
-            url : 'action/search',
-            dataType : 'json',
-            data : $('#search-form').serialize() + '&siren=' + siren + '&limit=' + limit
-        }).done(function(data) {
-            displayResults(data, current, offset, 'simple');
-        }).fail(function(obj, text, error) {
-            displayError(obj, text, error);
-        });
-    }
+
+    searchFieldValue = $('#search' +'-form input[name="search-field"]').val();
+
+
+    showhide('#loading-area', '#directory-area');
+    $.ajax({
+        type : 'post',
+        url : 'action/search',
+        dataType : 'json',
+        data : $('#search-form').serialize() + '&siren=' + siren + '&limit=' + limit
+    }).done(function(data) {
+        displayResults(data, current, offset, 'simple');
+    }).fail(function(obj, text, error) {
+        displayError(obj, text, error);
+    });
+
 }
 
 /** @description Execute an advanced search with ajax call.
@@ -124,27 +117,20 @@ function advancedSearch(current, offset) {
     $('ul.pagination').empty().hide();
     $('#advanced-search-form input[name="current"]').val(current);
     $('#advanced-search-form input[name="offset"]').val(offset);
-    var inputFieldValue = 0;
-    $('#advanced-search-form input[type="text"], #advanced-search-form input[type="date"], #advanced-search-form select').each(function() {
-        if ($(this).val().trim() !== '') {
-            inputFieldValue++;
-        }
+
+
+    showhide('#loading-area', '#directory-area');
+    $.ajax({
+        type : 'post',
+        url : 'action/advanced-search',
+        dataType : 'json',
+        data : $('#advanced-search-form').serialize() + '&siren=' + siren + '&limit=' + limit
+    }).done(function(data) {
+        displayResults(data, current, offset, 'advanced');
+    }).fail(function(obj, text, error) {
+        displayError(obj, text, error);
     });
-    if (inputFieldValue === 0) {
-        displayMessage('warning', 'Veuillez saisir un ou plusieurs crit&egrave;re(s) de recherche');
-    } else {
-        showhide('#loading-area', '#directory-area');
-        $.ajax({
-            type : 'post',
-            url : 'action/advanced-search',
-            dataType : 'json',
-            data : $('#advanced-search-form').serialize() + '&siren=' + siren + '&limit=' + limit
-        }).done(function(data) {
-            displayResults(data, current, offset, 'advanced');
-        }).fail(function(obj, text, error) { 
-            displayError(obj, text, error);
-        });
-    }
+
 }
 
 /** @description Display results area from Ajax JSON data. 
@@ -155,7 +141,6 @@ function advancedSearch(current, offset) {
  */
 function displayResults(data, current, offset, type) {
     if (data && data.numFound > 0) {
-        $('#collapse-area').hide();
         $('ul.list-group').empty();
         $('#nb-results span').html(data.numFound);
         var firstLine = true;
@@ -182,6 +167,8 @@ function displayResults(data, current, offset, type) {
             placement: 'top'
         });
     } else {
+        $('ul.list-group').empty();
+        $('#results-area').hide();
         displayMessage('warning', '<b>0 r&eacute;sultat</b><br />Aucun r&eacute;sultat, veuillez revoir vos mots cl&eacute;s de recherche');
     }
 }
@@ -192,7 +179,11 @@ function displayResults(data, current, offset, type) {
  * @return HTML element
  */
 function feedResultLine(doc, collapse) {
-    var line = '<li class="list-group-item" data-toggle="collapse" data-target="#details-'.concat(doc.id).concat('" ');
+    var classItem = "list-group-item";
+    if(doc.typology && doc.typology[0] === "PJ"){
+        classItem = classItem.concat(" pj");
+    }
+    var line = '<li class="'.concat(classItem).concat('" data-toggle="collapse" data-target="#details-').concat(doc.id).concat('" ');
     line = line.concat('aria-expanded="').concat(collapse).concat('" aria-controls="details-').concat(doc.id).concat('">');
     var chevron = 'up';
     if (collapse) {
@@ -202,6 +193,7 @@ function feedResultLine(doc, collapse) {
     if (doc.description) {
         line = line.concat('<span class="title">').concat(decodeUtf8(doc.description[0])).concat('</span>');
     }
+
     if (doc.date) {
         line = line.concat('<span class="date">').concat(toDate(doc.date[0])).concat('</span>');
     }
@@ -211,10 +203,17 @@ function feedResultLine(doc, collapse) {
         line = line.concat(' show');
     }
     line = line.concat('" id="details-').concat(doc.id).concat('">');
-    var filetype = doc.stream_content_type[0];
+
+    var filetype= "";
+    if(doc.content_type) {
+        filetype = doc.content_type[0];
+    } else if (doc.stream_content_type){
+        filetype = doc.stream_content_type[0];
+    }
+
     if (doc.filepath) {
         const tab= doc.filepath[0].split('/')
-        var filename =unescape(tab[tab.length-1])
+        var filename = unescape(tab[tab.length-1])
 
         var filepath = doc.filepath[0];
         if (location.protocol === 'https:') {
@@ -230,18 +229,25 @@ function feedResultLine(doc, collapse) {
         }
         line = line.concat('<a class="link mime ').concat(getMimeTypeClass(filetype)).concat('" target="_blank" href="');
         line = line.concat(filepath).concat('" title="').concat(filename);
-        line = line.concat('">').concat(filename).concat('</a>');
+        line = line.concat('">').concat("Voir le document").concat('</a>');
     }
     line = line.concat('<span class="permalink copy-btn" data-url="').concat(filepath).concat('" data-toggle="tooltip" data-placement="top" title="Copier dans le presse-papier"><i class="fas fa-link"></i>&nbsp;Copier le permalien du document</span>')
     line = line.concat('<ul>');
     if (doc.description) {
         line = line.concat('<li>Objet : <span class="font-italic">').concat(decodeUtf8(doc.description[0])).concat('</span></li>');
     }
+
     line = line.concat('<li>');
     if (doc.documenttype) {
-        if (doc.documenttype == 1 ) {
+        if (doc.documenttype[0] === 1 ) {
             line = line.concat('Type de document : <span class="font-italic">').concat("D&eacute;lib&eacute;rations").concat('</span>');
-        } else if (doc.documenttype == 5 ) {
+        } else if (doc.documenttype[0] === 2 ) {
+            line = line.concat('Type de document : <span class="font-italic">').concat("Actes r&eacuteglementaires").concat('</span>');
+        } else if (doc.documenttype[0] === 3 ) {
+            line = line.concat('Type de document : <span class="font-italic">').concat("Actes individuels").concat('</span>');
+        } else if (doc.documenttype[0] === 4 ) {
+            line = line.concat('Type de document : <span class="font-italic">').concat("Contrats,conventions et avenants").concat('</span>');
+        } else if (doc.documenttype[0] === 5 ) {
             line = line.concat('Type de document : <span class="font-italic">').concat("Documents budg&eacute;taires et financiers").concat('</span>');
         } else {
             line = line.concat('Type de document : <span class="font-italic">').concat("autre").concat('</span>');
@@ -253,36 +259,17 @@ function feedResultLine(doc, collapse) {
     }
     line = line.concat('</li>');
     if (doc.classification) {
-        line = line.concat('<li>Classification : <span class="font-italic">').concat(decodeUtf8(doc.classification[0])).concat('</span></li>');
+        line = line.concat('<li>Classification : <span class="font-italic">').concat(decodeUtf8(doc.classification)).concat('</span></li>');
+    }
+    if (doc.date_de_publication) {
+        line = line.concat('<li>Date de publication : <span class="date">').concat(toDate(doc.date_de_publication[0])).concat('</span></li>');
+    }
+    if (doc.siren) {
+        line = line.concat('<li>SIREN : <span class="font-italic">').concat(decodeUtf8(doc.siren)).concat('</span></li>');
     }
     line = line.concat('</ul>');
 
-    line = line.concat('<span class="address">');
-    if (doc.entity) {
-        line = line.concat(decodeUtf8(doc.entity[0]));
-        if (doc.siren && doc.nic) {
-            line = line.concat(' (SIRET ').concat(doc.siren[0]).concat(doc.nic[0]).concat(')<br />');
-        }
-    }
-    if (doc.adresse1) {
-        line = line.concat(decodeUtf8(doc.adresse1[0])).concat('<br />');
-    }
-    if (doc.boitepostale) {
-        line = line.concat(decodeUtf8(doc.boitepostale[0])).concat('<br />');
-    }
-    if (doc.adresse2) {
-        line = line.concat(decodeUtf8(doc.adresse2[0])).concat('<br />');
-    }
-    if (doc.codepostal) {
-        line = line.concat(doc.codepostal[0]);
-    }
-    if (doc.ville) {
-        line = line.concat(' ').concat(decodeUtf8(doc.ville[0]));
-    }
-    if (doc.cedex) {
-        line = line.concat(' CEDEX ').concat(decodeUtf8(doc.cedex[0])).concat('<br />');
-    }
-    line = line.concat('</span>');
+
     if (doc.filepath && filetype === 'application/pdf') {
         line = line.concat('</div></div>');
     }

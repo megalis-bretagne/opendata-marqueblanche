@@ -30,6 +30,7 @@ class SearchAction {
           $response->withHeader('Content-Type', 'application/json');
           if ($params != null && sizeof($params) > 0) {
               $keywords  = ArrayUtils::get($params, 'search-field');
+              $type      = ArrayUtils::get($params, 'type');
               $siren     = ArrayUtils::get($params, 'siren');
               $offset    = ArrayUtils::get($params, 'offset');
               $limit     = ArrayUtils::get($params, 'limit');
@@ -37,11 +38,11 @@ class SearchAction {
               $solr = $this->container->get('solr');
 
               // Plain text search.
-              $search = $solr->simpleSearch($keywords, $siren, $offset, $limit);
+              $search = $solr->simpleSearch($keywords, $siren, $type, $offset, $limit);
               $total = $search['response']['numFound'];
               if ($total == 0) {
                    // Seconde chance with query filter search.
-                   $search = $solr->simpleSearch($keywords, $siren, $offset, $limit, true);
+                   $search = $solr->simpleSearch($keywords, $siren, $type, $offset, $limit, true);
                    $total = $search['response']['numFound'];
               }
 

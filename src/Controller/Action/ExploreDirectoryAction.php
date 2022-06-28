@@ -129,8 +129,7 @@ class ExploreDirectoryAction {
                     return $response->withStatus(500);
                }
           } else {
-               $response->getBody()->write('Le dossier /'.$directory.' n\'existe pas.');
-               return $response->withStatus(404);
+               return $response->withStatus(200);
           }
 
           return $response;

@@ -4,7 +4,7 @@ configuration = {
     siren: '243301223',
     //title: 'Grand-Cubzaguais',
     directory: 'OpenData',
-    backgroundcolorstart: '#c4d7c4',
+    backgroundcolorstart: '#000000',
     backgroundcolorend: '#ffffff',
     gradient: true,
     color: '#e6eaea',

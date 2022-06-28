@@ -14,6 +14,30 @@ if (urlParams.has('siren')) {
             color: '#e6eaea',
             image: 'logoMegalis.png'
         }
+    }else if (urlParams.get('siren') == '222800013') {
+        configuration = {
+            limit: 10,
+            siren: '222800013',
+            //title: 'Eure-et-Loir département',
+            directory: 'OpenData',
+            backgroundcolorstart: '#000000',
+            backgroundcolorend: '#ffffff',
+            gradient: true,
+            color: '#e6eaea',
+            image: '222800013.png'
+            }
+    }else if (urlParams.get('siren') == '200030203') {
+        configuration = {
+            limit: 10,
+            siren: '200030203',
+            //title: 'Eure-et-Loir département',
+            directory: 'OpenData',
+            backgroundcolorstart: '#53AEC8',
+            backgroundcolorend: '#ffffff',
+            gradient: true,
+            color: '#e6eaea',
+            image: '200030203.png'
+        }
     } else if (urlParams.get('siren') == '200044394') {
         configuration = {
             limit: 10,

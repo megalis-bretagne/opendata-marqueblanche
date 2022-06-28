@@ -32,33 +32,19 @@ class AdvancedSearchAction {
                $keywords  = ArrayUtils::get($params, 'content');
                $siren     = ArrayUtils::get($params, 'siren');
                $type      = ArrayUtils::get($params, 'type');
-               if (!empty($type)) {
-                    switch ($type) {
-                        case 1 :
-                              $type = 1;
-                              break;
-                         case 2 :
-                              $type= 5;
-                              break;
-                         default :
-                             $type= null;
-                    }
-               }
                $startdate = ArrayUtils::get($params, 'startdate');
                $enddate   = ArrayUtils::get($params, 'enddate');
-               $zipcode   = ArrayUtils::get($params, 'zipcode');
-               $city      = ArrayUtils::get($params, 'city');
                $offset    = ArrayUtils::get($params, 'offset');
                $limit     = ArrayUtils::get($params, 'limit');
 
                $solr = $this->container->get('solr');
 
                // Plain text search.
-               $search = $solr->advancedSearch($keywords, $type, $siren, $startdate, $enddate, $zipcode, $city, $offset, $limit);
+               $search = $solr->advancedSearch($keywords, $type, $siren, $startdate, $enddate, $offset, $limit);
                $total = $search['response']['numFound'];
                if ($total == 0) {
                     // Seconde chance with query filter search.
-                    $search = $solr->advancedSearch($keywords, $type, $siren, $startdate, $enddate, $zipcode, $city, $offset, $limit, true);
+                    $search = $solr->advancedSearch($keywords, $type, $siren, $startdate, $enddate, $offset, $limit, true);
                     $total = $search['response']['numFound'];
                }
 

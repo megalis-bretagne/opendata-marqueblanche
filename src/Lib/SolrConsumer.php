@@ -68,7 +68,6 @@ class SolrConsumer {
         curl_setopt_array($ch, $options);
 		curl_exec($ch);
 		$result = false;
-		$errmsg;
         if (curl_errno($ch) == 0) {
 			$status = curl_getinfo($ch)['http_code'];
             if ($status == 200) {
@@ -123,6 +122,7 @@ class SolrConsumer {
             $query->addField('siren');                  // Entity siren
             $query->addField('date');                   // Document date
             $query->addField('filepath');               // File OpenData URL
+            $query->addField('content_type');           // Type of document file
             $query->addField('stream_content_type');    // Type of document file
             $query->addField('id');                     // Solr document identifier
             $query->addField('stream_name');            // Filename
@@ -143,6 +143,7 @@ class SolrConsumer {
 	 *
 	 * @param string $keywords Search keywords
      * @param string $siren Entity SIREN to filter results for entity only
+     * @param string $type type of document
 	 * @param int $offset Start offset for search
 	 * @param int $limit Limit for results display
 	 * @param boolean $qf (optional) Flag to activate queryField search for numerized documents (false by default)
@@ -151,9 +152,13 @@ class SolrConsumer {
 	 * @throws \Exception If an error occured during request
 	 * @access public
 	 */
-    public function simpleSearch($keywords, $siren, $offset, $limit, $qf = false) {
+    public function simpleSearch($keywords, $siren, $type, $offset, $limit, $qf = false) {
         try {
             $query = $this->initializeQuery($siren, $offset, $limit, $keywords, $qf);
+
+            if (!empty($type)) {
+                $query->addFilterQuery('documenttype:'.SolrUtils::queryPhrase($type));
+            }
     
             return $this->getSolrClient()->query($query)->getResponse();
 
@@ -174,8 +179,6 @@ class SolrConsumer {
      * @param string $siren Entity SIREN to filter results for entity only
 	 * @param string $startDate Start date from search form
 	 * @param string $endDate End date from search form
-	 * @param string $zipCode Zipcode from search form
-	 * @param string $city City from search form
 	 * @param int $offset Start offset for search
 	 * @param int $limit Limit for results display
 	 * @param boolean $qf (optional) Flag to activate queryField search for numerized documents (false by default)
@@ -184,7 +187,7 @@ class SolrConsumer {
 	 * @throws \Exception If an error occured during request
 	 * @access public
 	 */
-    public function advancedSearch($keywords, $type, $siren, $startDate, $endDate, $zipCode, $city, $offset, $limit, $qf = false) {
+    public function advancedSearch($keywords, $type, $siren, $startDate, $endDate, $offset, $limit, $qf = false) {
         try {
             if (!empty($keywords)) {
                 $searchWords = $keywords;
@@ -195,12 +198,6 @@ class SolrConsumer {
             }
             if (!empty($startDate) || !empty($endDate)) {
                 $query->addFilterQuery('date:'.$this->setDateFilter($startDate, $endDate));
-            }
-            if (!empty($zipCode)) {
-                $query->addFilterQuery('codepostal:'.$zipCode);
-            }
-            if (!empty($city)) {
-                $query->addFilterQuery('ville:'.$city);
             }
     
             return $this->getSolrClient()->query($query)->getResponse();
@@ -407,18 +404,15 @@ class SolrConsumer {
 	 */
     protected function setFieldsForResponse(SolrDisMaxQuery &$query) {
         $query->addField('entity');                 // Entity name
-        $query->addField('adresse1');               // First line address
-        $query->addField('adresse2');               // Address complement
-        $query->addField('codepostal');             // Zipcode
-        $query->addField('ville');                  // City
-        $query->addField('boitepostale');           // Boite postale
-        $query->addField('cedex');                  // Cedex
         $query->addField('siren');                  // Entity siren
         $query->addField('nic');                    // Entity nic : SIRET = siren+nic
         $query->addField('date');                   // Document date
         $query->addField('filepath');               // File OpenData URL
         $query->addField('documenttype');           // Document type
         $query->addField('classification');         // Classification
+        $query->addField('typology');               // Typology
+        $query->addField('date_de_publication');    // Date de publication
+        $query->addField('content_type');           // Type of document file
         $query->addField('stream_content_type');    // Type of document file
         $query->addField('id');                     // Solr document identifier
         $query->addField('documentidentifier');     // Pastell document identifier
