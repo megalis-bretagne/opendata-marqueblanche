@@ -57,7 +57,7 @@ if (urlParams.has('siren')) {
                 siren: urlParams.get('siren'),
                 title: 'siren: '+urlParams.get('siren'),
                 directory: 'OpenData',
-                backgroundcolorstart: '#a42844',
+                backgroundcolorstart: '#4e7c3f',
                 backgroundcolorend: '#e3e6e7',
                 gradient: true,
                 color: '#e6eaea',
