@@ -267,6 +267,9 @@ function feedResultLine(doc, collapse) {
     if (doc.siren) {
         line = line.concat('<li>SIREN : <span class="font-italic">').concat(decodeUtf8(doc.siren)).concat('</span></li>');
     }
+    if (doc.blockchain_url) {
+        line = line.concat('<li><a href="').concat(decodeUtf8(doc.blocklchain_url)).concat('"><i class="fa fa-cubes"></i>Lien vers la transaction.</a></li>');
+    }
     line = line.concat('</ul>');
 
 

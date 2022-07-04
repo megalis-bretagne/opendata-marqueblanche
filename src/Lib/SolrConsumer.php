@@ -418,6 +418,8 @@ class SolrConsumer {
         $query->addField('documentidentifier');     // Pastell document identifier
         $query->addField('description');            // Document short description
         $query->addField('stream_name');            // Filename
+        $query->addField('blockchain_enable');      // Boolean is this publication in the blockchain
+        $query->addField('blockchain_url');         // Url to the transaction
     }
 
 	/**
