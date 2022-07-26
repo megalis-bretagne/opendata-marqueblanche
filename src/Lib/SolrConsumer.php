@@ -381,8 +381,8 @@ class SolrConsumer {
         $query->setTimeAllowed(1500);
         $query->setMltMinWordLength(3);
         $query->addSortField('date', 1);
-        $query->addSortField('description', 0);
-        $query->addSortField('typology', 1);
+        $query->addSortField('publication_id', 0);
+
 
         if (!empty($siren)) {
             $query->addFilterQuery('siren:'.$siren);
