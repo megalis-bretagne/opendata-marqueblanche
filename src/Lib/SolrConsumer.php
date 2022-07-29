@@ -381,6 +381,8 @@ class SolrConsumer {
         $query->setTimeAllowed(1500);
         $query->setMltMinWordLength(3);
         $query->addSortField('date', 1);
+        $query->addSortField('publication_id',0);
+        $query->addSortField('date_de_publication',0);
 
         if (!empty($siren)) {
             $query->addFilterQuery('siren:'.$siren);
@@ -418,6 +420,8 @@ class SolrConsumer {
         $query->addField('documentidentifier');     // Pastell document identifier
         $query->addField('description');            // Document short description
         $query->addField('stream_name');            // Filename
+        $query->addField('blockchain_enable');      // Boolean is this publication in the blockchain
+        $query->addField('blockchain_url');         // Url to the transaction
     }
 
 	/**
