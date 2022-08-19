@@ -389,6 +389,8 @@ class SolrConsumer {
         }
         $query->addFilterQuery('est_publie:true');
 
+		$query->addFilterQuery('opendata_active:true');
+
         $query->setStart($offset);
         $query->setRows($limit);
 
