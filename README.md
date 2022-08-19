@@ -1,4 +1,5 @@
 # Interface de recherche des données citoyennes avec administration
+Projet de réutilisation de données délibération issu du projet 'Data search engine de Gironde Numérique disponible ici : https://gitlab.adullact.net/gironde-numerique/data-search-engine
 
 ## Description
 Cette application constitue un moteur de recherche de données publiques pour une collectivité. Elle s'accompagne d'une interface d'administration des documents constituant le jeu des données publiques associées.
